@@ -11,13 +11,22 @@ export default function Extraklasa() {
     axios
       .get(apiURL)
       .then((res) => {
-        console.log(res.data.schedules);
         setSeasonMatches(res.data.schedules);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+
+  const handleColor = (hostsScore, guestScore) => { if (hostsScore > guestScore) {
+      return {hostColor: "green", guestColor: "red"};
+    } else if (hostsScore < guestScore) {
+        return {hostColor: "red", guestColor: "green"};
+    } else if (hostsScore === guestScore) {
+        return {hostColor: "yellow", guestColor: "yellow"};
+    } 
+  };
   return (
     <div className="extraklasa">
       <table>
@@ -35,14 +44,30 @@ export default function Extraklasa() {
         <tbody>
           {seasonMatches.map((seasonMatch) => {
             const {
-              sport_event: { competitors, start_time, venue: {name: stadiumName} },
+              sport_event: {
+                competitors,
+                start_time,
+                venue: { name: stadiumName },
+              },
               sport_event_status: { home_score, away_score, period_scores },
             } = seasonMatch;
             return (
               <tr key={seasonMatch.sport_event.id}>
-                <td>{competitors[0].name}</td>
+                <td
+                  style={{
+                    backgroundColor: handleColor(home_score, away_score).hostColor
+                  }}
+                >
+                  {competitors[0].name}
+                </td>
                 <td>vs</td>
-                <td>{competitors[1].name}</td>
+                <td
+                  style={{
+                    backgroundColor: handleColor(home_score, away_score).guestColor
+                  }}
+                >
+                  {competitors[1].name}
+                </td>
                 <td>
                   {home_score} : {away_score}
                 </td>
