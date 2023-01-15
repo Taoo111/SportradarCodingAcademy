@@ -18,14 +18,16 @@ export default function Extraklasa() {
       });
   }, []);
 
-
-  const handleColor = (hostsScore, guestScore) => { if (hostsScore > guestScore) {
-      return {hostColor: "green", guestColor: "red"};
+  const handleColor = (hostsScore, guestScore) => {
+    if (!hostsScore || !guestScore === "undefined") {
+      return { hostColor: "royalblue", guestColor: "royalblue" };
+    } else if (hostsScore > guestScore) {
+      return { hostColor: "green", guestColor: "red" };
     } else if (hostsScore < guestScore) {
-        return {hostColor: "red", guestColor: "green"};
+      return { hostColor: "red", guestColor: "green" };
     } else if (hostsScore === guestScore) {
-        return {hostColor: "yellow", guestColor: "yellow"};
-    } 
+      return { hostColor: "yellow", guestColor: "yellow" };
+    }
   };
   return (
     <div className="extraklasa">
@@ -55,7 +57,8 @@ export default function Extraklasa() {
               <tr key={seasonMatch.sport_event.id}>
                 <td
                   style={{
-                    backgroundColor: handleColor(home_score, away_score).hostColor
+                    backgroundColor: handleColor(home_score, away_score)
+                      .hostColor,
                   }}
                 >
                   {competitors[0].name}
@@ -63,7 +66,8 @@ export default function Extraklasa() {
                 <td>vs</td>
                 <td
                   style={{
-                    backgroundColor: handleColor(home_score, away_score).guestColor
+                    backgroundColor: handleColor(home_score, away_score)
+                      .guestColor,
                   }}
                 >
                   {competitors[1].name}
