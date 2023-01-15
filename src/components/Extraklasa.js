@@ -23,24 +23,39 @@ export default function Extraklasa() {
       <table>
         <thead>
           <tr>
-            <th>Team Names</th>
+            <th>Host</th>
+            <th></th>
+            <th>Guest</th>
             <th>Result</th>
+            <th>Match Date</th>
+            <th>Half Time Score</th>
+            <th>Stadium Name</th>
           </tr>
         </thead>
         <tbody>
           {seasonMatches.map((seasonMatch) => {
             const {
-              sport_event: { competitors },
-              sport_event_status: { home_score, away_score },
+              sport_event: { competitors, start_time, venue: {name: stadiumName} },
+              sport_event_status: { home_score, away_score, period_scores },
             } = seasonMatch;
             return (
               <tr key={seasonMatch.sport_event.id}>
-                <td>
-                  {competitors[0].name} vs {competitors[1].name}
-                </td>
+                <td>{competitors[0].name}</td>
+                <td>vs</td>
+                <td>{competitors[1].name}</td>
                 <td>
                   {home_score} : {away_score}
                 </td>
+                <td>{start_time.slice(0, 10)}</td>
+                {period_scores ? (
+                  <td>
+                    {period_scores[0].home_score} -{" "}
+                    {period_scores[0].away_score}
+                  </td>
+                ) : (
+                  <td>Match Postponed</td>
+                )}
+                <td>{stadiumName}</td>
               </tr>
             );
           })}
