@@ -1,11 +1,26 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const apiURL =
-  "https://cors-anywhere.herokuapp.com/https://api.sportradar.us/soccer/trial/v4/en/seasons/sr:season:77453/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb";
+const apiVariousSeasons =
+  "https://cors-anywhere.herokuapp.com/https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=hj3veq9wwk274tx5x66fadtb";
 
 export default function Extraklasa() {
   const [seasonMatches, setSeasonMatches] = useState([]);
+  const [choosedSeason, setChoosedSeason] = useState("sr:season:77453");
+  const [seasons, setSeasons] = useState([]);
+
+  const apiURL = `https://cors-anywhere.herokuapp.com/https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb`;
+
+  useEffect(() => {
+    axios
+      .get(apiVariousSeasons)
+      .then((res) => {
+        setSeasons(res.data.seasons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },[]);
 
   useEffect(() => {
     axios
@@ -16,7 +31,7 @@ export default function Extraklasa() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [choosedSeason]);
 
   const handleColor = (hostsScore, guestScore) => {
     if (!hostsScore || !guestScore === "undefined") {
@@ -31,6 +46,13 @@ export default function Extraklasa() {
   };
   return (
     <div className="extraklasa">
+      <h1>Ekstraklasa - sezony</h1>
+      <select value={choosedSeason} onChange={(e) => setChoosedSeason(e.target.value)}>
+        {seasons.map((season) =>{
+          const {id: seasonId, name: seasonName} = season
+          return <option key={seasonId} value={seasonId}>{seasonName}</option>
+        })}
+      </select>
       <table>
         <thead>
           <tr>
