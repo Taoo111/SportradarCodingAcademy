@@ -20,7 +20,7 @@ export default function Extraklasa() {
       .catch((err) => {
         console.log(err);
       });
-  },[]);
+  }, []);
 
   useEffect(() => {
     axios
@@ -34,7 +34,10 @@ export default function Extraklasa() {
   }, [choosedSeason]);
 
   const handleColor = (hostsScore, guestScore) => {
-    if (!hostsScore || !guestScore === "undefined") {
+    if (
+      typeof hostsScore === "undefined" ||
+      typeof guestScore === "undefined"
+    ) {
       return { hostColor: "royalblue", guestColor: "royalblue" };
     } else if (hostsScore > guestScore) {
       return { hostColor: "green", guestColor: "red" };
@@ -47,10 +50,17 @@ export default function Extraklasa() {
   return (
     <div className="extraklasa">
       <h1>Ekstraklasa - sezony</h1>
-      <select value={choosedSeason} onChange={(e) => setChoosedSeason(e.target.value)}>
-        {seasons.map((season) =>{
-          const {id: seasonId, name: seasonName} = season
-          return <option key={seasonId} value={seasonId}>{seasonName}</option>
+      <select
+        value={choosedSeason}
+        onChange={(e) => setChoosedSeason(e.target.value)}
+      >
+        {seasons.map((season) => {
+          const { id: seasonId, name: seasonName } = season;
+          return (
+            <option key={seasonId} value={seasonId}>
+              {seasonName}
+            </option>
+          );
         })}
       </select>
       <table>
