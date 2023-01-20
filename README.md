@@ -1,3 +1,6 @@
+# About branches
+In this repository, you will find four branches (taskOne, taskTwo, taskThree, taskFour) that contain the implementation of the matchData component. Please note that these branches do not contain any styling, as the focus during their development was on the functionality of the component.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
