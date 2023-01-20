@@ -1,15 +1,16 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const apiVariousSeasons =
-  "https://cors-anywhere.herokuapp.com/https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=hj3veq9wwk274tx5x66fadtb";
+  "https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=hj3veq9wwk274tx5x66fadtb";
 
 export default function Extraklasa() {
   const [seasonMatches, setSeasonMatches] = useState([]);
   const [choosedSeason, setChoosedSeason] = useState("sr:season:77453");
   const [seasons, setSeasons] = useState([]);
 
-  const apiURL = `https://cors-anywhere.herokuapp.com/https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb`;
+  const apiURL = `https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb`;
 
   useEffect(() => {
     axios
@@ -93,7 +94,9 @@ export default function Extraklasa() {
                       .hostColor,
                   }}
                 >
-                  {competitors[0].name}
+                  <Link to={`/match/${seasonMatch.sport_event.id}`}>
+                    {competitors[0].name}
+                  </Link>
                 </td>
                 <td>vs</td>
                 <td
