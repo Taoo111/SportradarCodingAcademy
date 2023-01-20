@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Table from 'react-bootstrap/Table'
 
 const apiVariousSeasons =
   "https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=hj3veq9wwk274tx5x66fadtb";
@@ -9,6 +11,11 @@ export default function Extraklasa() {
   const [seasonMatches, setSeasonMatches] = useState([]);
   const [choosedSeason, setChoosedSeason] = useState("sr:season:77453");
   const [seasons, setSeasons] = useState([]);
+  const navigate = useNavigate();
+
+  const goRouteId = (id) => {
+    navigate(`/match/${id}`);
+   }  
 
   const apiURL = `https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb`;
 
@@ -39,13 +46,13 @@ export default function Extraklasa() {
       typeof hostsScore === "undefined" ||
       typeof guestScore === "undefined"
     ) {
-      return { hostColor: "royalblue", guestColor: "royalblue" };
+      return { hostColor: "primary", guestColor: "primary" };
     } else if (hostsScore > guestScore) {
-      return { hostColor: "green", guestColor: "red" };
+      return { hostColor: "success", guestColor: "danger" };
     } else if (hostsScore < guestScore) {
-      return { hostColor: "red", guestColor: "green" };
+      return { hostColor: "danger", guestColor: "success" };
     } else if (hostsScore === guestScore) {
-      return { hostColor: "yellow", guestColor: "yellow" };
+      return { hostColor: "warning", guestColor: "warning" };
     }
   };
   return (
@@ -64,7 +71,7 @@ export default function Extraklasa() {
           );
         })}
       </select>
-      <table>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>Host</th>
@@ -87,25 +94,15 @@ export default function Extraklasa() {
               sport_event_status: { home_score, away_score, period_scores },
             } = seasonMatch;
             return (
-              <tr key={seasonMatch.sport_event.id}>
-                <td
-                  style={{
-                    backgroundColor: handleColor(home_score, away_score)
-                      .hostColor,
-                  }}
-                >
-                  <Link to={`/match/${seasonMatch.sport_event.id}`}>
+              <tr key={seasonMatch.sport_event.id} onClick={()=> goRouteId(seasonMatch.sport_event.id)}>
+                <td className={`bg-${handleColor(home_score, away_score).hostColor}`}>
                     {competitors[0].name}
-                  </Link>
                 </td>
                 <td>vs</td>
                 <td
-                  style={{
-                    backgroundColor: handleColor(home_score, away_score)
-                      .guestColor,
-                  }}
+                  className={`bg-${handleColor(home_score, away_score).guestColor}`}
                 >
-                  {competitors[1].name}
+                    {competitors[1].name}
                 </td>
                 <td>
                   {home_score} : {away_score}
@@ -124,7 +121,7 @@ export default function Extraklasa() {
             );
           })}
         </tbody>
-      </table>
+        </Table>
     </div>
   );
 }
