@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Table from 'react-bootstrap/Table'
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./extraklasa.css";
+import Table from "react-bootstrap/Table";
+import Form from "react-bootstrap/Form";
 
 const apiVariousSeasons =
   "https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=hj3veq9wwk274tx5x66fadtb";
@@ -15,7 +18,7 @@ export default function Extraklasa() {
 
   const goRouteId = (id) => {
     navigate(`/match/${id}`);
-   }  
+  };
 
   const apiURL = `https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb`;
 
@@ -58,7 +61,8 @@ export default function Extraklasa() {
   return (
     <div className="extraklasa">
       <h1>Ekstraklasa - sezony</h1>
-      <select
+      <Form.Select
+        className="select-season"
         value={choosedSeason}
         onChange={(e) => setChoosedSeason(e.target.value)}
       >
@@ -70,7 +74,7 @@ export default function Extraklasa() {
             </option>
           );
         })}
-      </select>
+      </Form.Select>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -94,15 +98,25 @@ export default function Extraklasa() {
               sport_event_status: { home_score, away_score, period_scores },
             } = seasonMatch;
             return (
-              <tr key={seasonMatch.sport_event.id} onClick={()=> goRouteId(seasonMatch.sport_event.id)}>
-                <td className={`bg-${handleColor(home_score, away_score).hostColor}`}>
-                    {competitors[0].name}
+              <tr
+                className="tr-table"
+                key={seasonMatch.sport_event.id}
+                onClick={() => goRouteId(seasonMatch.sport_event.id)}
+              >
+                <td
+                  className={`bg-${
+                    handleColor(home_score, away_score).hostColor
+                  } competitor`}
+                >
+                  {competitors[0].name}
                 </td>
                 <td>vs</td>
                 <td
-                  className={`bg-${handleColor(home_score, away_score).guestColor}`}
+                  className={`bg-${
+                    handleColor(home_score, away_score).guestColor
+                  } competitor`}
                 >
-                    {competitors[1].name}
+                  {competitors[1].name}
                 </td>
                 <td>
                   {home_score} : {away_score}
@@ -121,7 +135,7 @@ export default function Extraklasa() {
             );
           })}
         </tbody>
-        </Table>
+      </Table>
     </div>
   );
 }

@@ -1,0 +1,28 @@
+.extraklasa{
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.extraklasa h1{
+        font-size: 3rem;
+        font-weight: bold;
+        color: #212529;
+        text-align: center;
+        margin-top: 30px;
+}
+
+.tr-table {
+  cursor: pointer;
+}
+
+.select-season{
+    cursor: pointer;
+    width: 200px;
+    margin: 30px auto;
+}
+
+.competitor{
+    font-weight: bold;
+}
