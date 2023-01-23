@@ -7,12 +7,13 @@ import "./matchData.css";
 import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
+import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 export default function MatchData() {
-  // const [showTimeline, setShowTimeline] = useState(false);
-  // const [showPlayers, setShowPlayers] = useState(true);
+  const [showTimeline, setShowTimeline] = useState(false);
+  const [showPlayers, setShowPlayers] = useState(true);
 
   const { id } = useParams();
   const matchInfoApi = `https://api.sportradar.us/soccer/trial/v4/en/sport_events/${id}/timeline.json?api_key=8bx9u4adp5fztegw84qe238q`;
@@ -29,67 +30,93 @@ export default function MatchData() {
       });
   }, []);
 
+  useEffect(() => {
+    document.body.style.backgroundColor = "#1b3d64";
+    return () => {
+      document.body.style.backgroundColor = "#fff";
+    };
+  }, []);
+
   console.log(matchData);
 
   return (
     <div className="container my-5">
       {matchData ? (
         <div>
-          <h1 className="text-center mb-4">Match Data</h1>
-          <h2>Id: {id}</h2>
-          <h2>Home: {matchData.sport_event.competitors[0].name}</h2>
-          <h2>Away: {matchData.sport_event.competitors[1].name}</h2>
-          <h2>Home Score: {matchData.sport_event_status.home_score}</h2>
-          <h2>Away Score: {matchData.sport_event_status.away_score}</h2>
+          <header className="d-flex flex-row justify-content-around display-6 text-white">
+            <div className="d-flex flex-column align-items-center mw-40">
+              <p>{matchData.sport_event.competitors[0].name}</p>
+              <p>{matchData.sport_event_status.home_score}</p>
+            </div>
+            <div className="d-flex flex-column align-items-center mw-40">
+              <p>{matchData.sport_event.competitors[1].name}</p>
+              <p>{matchData.sport_event_status.away_score}</p>
+            </div>
+          </header>
 
-          {/* <button onClick={() => setShowTimeline(!showTimeline)}>Show Timeline</button>
-          <button on Click={() => {
-            setShowPlayers(!showPlayers)
-            setShowTimeline(!showTimeline)
-          }}>
-            Show Players
-          </button> */}
+          <div className="d-flex justify-content-center m-4">
+            <button type="button" class="btn btn-lg btn-outline-warning"
+              onClick={() => {
+                setShowTimeline(false);
+                setShowPlayers(true);
+              }}
+            >
+              Show Players
+            </button>
+            <button type="button" class="btn btn-lg btn-outline-warning"
+              onClick={() => {
+                setShowTimeline(true);
+                setShowPlayers(false);
+              }}
+            >
+              Show Players
+            </button>
+          </div>
 
-          {matchData ? (
-            <Row>
-              <Col xs lg="3">
-                <h5>Home</h5>
-                <ListGroup variant="flush">
-                  {matchData.timeline.map((event, index) =>
-                    event.competitor === "home" ? (
-                      <ListGroupItem key={index} className="list-group-item">
-                        <strong>{event.match_time}'</strong> {event.type}
-                      </ListGroupItem>
-                    ) : (
-                      <ListGroupItem
-                        key={index}
-                        className="list-group-item"
-                      ></ListGroupItem>
-                    )
-                  )}
-                </ListGroup>
-              </Col>
-              <Col xs lg="3">
-                <h5>Away</h5>
-                <ListGroup variant="flush">
-                  {matchData.timeline.map((event, index) =>
-                    event.competitor === "away" ? (
-                      <ListGroupItem key={index}>
-                        <strong>{event.match_time}'</strong> - {event.type}
-                      </ListGroupItem>
-                    ) : (
-                      <ListGroupItem key={index}></ListGroupItem>
-                    )
-                  )}
-                </ListGroup>
-              </Col>
-            </Row>
-          ) : (
-            <Table bordered responsive="sm" className="players-table">
+          {showTimeline && (
+            <Container fluid>
+              <Row className="justify-content-center">
+                <Col xs lg="3">
+                  <ListGroup variant="flush">
+                    {matchData.timeline.slice(2).map((event, index) =>
+                      event.competitor === "home" ? (
+                        <ListGroupItem key={index} className="list-group-item">
+                          <strong>{event.match_time}'</strong>{" "}
+                          {event.type.replace("_", " ")}
+                        </ListGroupItem>
+                      ) : (
+                        <ListGroupItem
+                          key={index}
+                          className="list-group-item"
+                        ></ListGroupItem>
+                      )
+                    )}
+                  </ListGroup>
+                </Col>
+                <Col xs lg="3">
+                  <ListGroup variant="flush">
+                    {matchData.timeline.slice(2).map((event, index) =>
+                      event.competitor === "away" ? (
+                        <ListGroupItem key={index}>
+                          <strong>{event.match_time}'</strong>
+                          {event.type.replace("_", " ")}
+                        </ListGroupItem>
+                      ) : (
+                        <ListGroupItem key={index}></ListGroupItem>
+                      )
+                    )}
+                  </ListGroup>
+                </Col>
+              </Row>
+            </Container>
+          )}
+
+          {showPlayers && (
+            <Table bordered responsive="sm" className="players-table mx-auto">
               <thead className="bg-secondary">
                 <tr>
-                  <th>Host</th>
-                  <th>Guest</th>
+                  <th>{matchData.sport_event.competitors[0].name}</th>
+                  <th>{matchData.sport_event.competitors[1].name}</th>
                 </tr>
               </thead>
               <tbody>
@@ -112,11 +139,9 @@ export default function MatchData() {
               </tbody>
             </Table>
           )}
-
-          <h2>Timeline</h2>
         </div>
       ) : (
-        <p>Loading data...</p>
+        <p className="d-flex justify-content-around display-3 text-white">Loading data...</p>
       )}
     </div>
   );
