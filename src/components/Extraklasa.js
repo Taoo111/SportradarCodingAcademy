@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,42 +6,19 @@ import "./extraklasa.css";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 
-const apiVariousSeasons =
-  "https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=8bx9u4adp5fztegw84qe238q";
+export default function Extraklasa(props) {
+  const {
+    seasonMatches,
+    seasons,
+    choosedSeason,
+    handleSeasonSelect,
+  } = props
 
-export default function Extraklasa() {
-  const [seasonMatches, setSeasonMatches] = useState([]);
-  const [choosedSeason, setChoosedSeason] = useState("sr:season:77453");
-  const [seasons, setSeasons] = useState([]);
   const navigate = useNavigate();
 
   const goRouteId = (id) => {
     navigate(`/match/${id}`);
   };
-
-  const apiURL = `https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=8bx9u4adp5fztegw84qe238q`;
-
-  useEffect(() => {
-    axios
-      .get(apiVariousSeasons)
-      .then((res) => {
-        setSeasons(res.data.seasons);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(apiURL)
-      .then((res) => {
-        setSeasonMatches(res.data.schedules);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [choosedSeason]);
 
   const handleColor = (hostsScore, guestScore) => {
     if (
@@ -64,7 +40,7 @@ export default function Extraklasa() {
       <Form.Select
         className="select-season"
         value={choosedSeason}
-        onChange={(e) => setChoosedSeason(e.target.value)}
+        onChange={(e) => handleSeasonSelect(e.target.value)}
       >
         {seasons.map((season) => {
           const { id: seasonId, name: seasonName } = season;
