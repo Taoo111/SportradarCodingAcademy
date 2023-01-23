@@ -1,5 +1,6 @@
 import Extraklasa from "./components/Extraklasa";
 import MatchData from "./components/MatchData";
+import PageNotFound from "./PageNotFound";
 
 import "./App.css";
 import {  Routes, Route } from "react-router-dom";
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Extraklasa />}></Route>
         <Route path="/match/:id/*" element={<MatchData />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );
