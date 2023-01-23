@@ -1,5 +1,7 @@
-# About branches
-In this repository, you will find four branches (taskOne, taskTwo, taskThree, taskFour) that contain the implementation of the matchData component. Please note that these branches do not contain any styling, as the focus during their development was on the functionality of the component.
+# About App
+Application uses Sportradar API to display results and information for three different Ekstraklasa seasons.
+The application is built using React and Bootstrap.
+User can filter the results table by season using a select, and can also navigate to a match info sub-page to view more detailed information about a specific match.
 
 # Getting Started with Create React App
 
