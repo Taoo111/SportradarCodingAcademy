@@ -15,7 +15,7 @@ export default function MatchData() {
   // const [showPlayers, setShowPlayers] = useState(true);
 
   const { id } = useParams();
-  const matchInfoApi = `https://api.sportradar.us/soccer/trial/v4/en/sport_events/${id}/timeline.json?api_key=hj3veq9wwk274tx5x66fadtb`;
+  const matchInfoApi = `https://api.sportradar.us/soccer/trial/v4/en/sport_events/${id}/timeline.json?api_key=8bx9u4adp5fztegw84qe238q`;
   const [matchData, setMatchData] = useState(null);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 
 const apiVariousSeasons =
-  "https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=hj3veq9wwk274tx5x66fadtb";
+  "https://api.sportradar.us/soccer/trial/v4/en/competitions/sr:competition:202/seasons.json?api_key=8bx9u4adp5fztegw84qe238q";
 
 export default function Extraklasa() {
   const [seasonMatches, setSeasonMatches] = useState([]);
@@ -20,7 +20,7 @@ export default function Extraklasa() {
     navigate(`/match/${id}`);
   };
 
-  const apiURL = `https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=hj3veq9wwk274tx5x66fadtb`;
+  const apiURL = `https://api.sportradar.us/soccer/trial/v4/en/seasons/${choosedSeason}/schedules.json?api_key=8bx9u4adp5fztegw84qe238q`;
 
   useEffect(() => {
     axios
@@ -77,7 +77,7 @@ export default function Extraklasa() {
       </Form.Select>
       <Table striped bordered hover>
         <thead>
-          <tr>
+          <tr className="align-middle">
             <th>Host</th>
             <th></th>
             <th>Guest</th>
@@ -99,7 +99,7 @@ export default function Extraklasa() {
             } = seasonMatch;
             return (
               <tr
-                className="tr-table"
+                className="tr-table align-middle"
                 key={seasonMatch.sport_event.id}
                 onClick={() => goRouteId(seasonMatch.sport_event.id)}
               >
